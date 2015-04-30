@@ -2,7 +2,7 @@ SRV Discovery Plugin for Elasticsearch
 ======================================
 
 Use SRV records for Elasticsearch discovery, like the ones
-[Consul][https://consul.io] provides.
+[Consul](https://consul.io) provides.
 
 ## Configuration
 
