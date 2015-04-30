@@ -19,7 +19,7 @@
             <useProjectArtifact>true</useProjectArtifact>
             <useTransitiveFiltering>true</useTransitiveFiltering>
             <includes>
-              <include>org.xbill:dnsjava</include>
+                <include>dnsjava:dnsjava</include>
             </includes>
         </dependencySet>
     </dependencySets>

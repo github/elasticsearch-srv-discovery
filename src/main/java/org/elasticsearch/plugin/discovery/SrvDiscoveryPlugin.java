@@ -14,25 +14,28 @@
  * limitations under the License.
  */
 
-package org.elasticsearch.discovery.srv;
+package org.elasticsearch.plugin.discovery;
 
-import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.discovery.Discovery;
-import org.elasticsearch.discovery.zen.ZenDiscoveryModule;
+import org.elasticsearch.plugins.AbstractPlugin;
 
-/**
- *
- */
-public class SrvDiscoveryModule extends ZenDiscoveryModule {
+public class SrvDiscoveryPlugin extends AbstractPlugin {
 
-    @Inject
-    public SrvDiscoveryModule(Settings settings) {
-        addUnicastHostProvider(SrvUnicastHostsProvider.class);
+    private final Settings settings;
+
+    public SrvDiscoveryPlugin(Settings settings) {
+        this.settings = settings;
     }
 
     @Override
-    protected void bindDiscovery() {
-        bind(Discovery.class).to(SrvDiscovery.class).asEagerSingleton();
+    public String name() {
+        return "srv-discovery";
     }
+
+    @Override
+    public String description() {
+        return "SRV Discovery Plugin";
+    }
+
+
 }
