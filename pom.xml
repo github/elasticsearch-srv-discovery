@@ -6,7 +6,7 @@
 
     <groupId>org.elasticsearch</groupId>
     <artifactId>elasticsearch-srv-discovery</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Elasticsearch SRV discovery plugin</name>
     <description>The SRV discovery plugin allows to use SRV recrds for unicast discovery.</description>
