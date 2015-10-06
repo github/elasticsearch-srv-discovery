@@ -135,7 +135,7 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
             logger.error("Unable to parse DNS query '{}'", query);
             logger.error("DNS lookup exception:", e);
         }
-        logger.info("Using dynamic discovery nodes {}", discoNodes);
+        logger.debug("Using dynamic discovery nodes {}", discoNodes);
         return discoNodes;
     }
 
