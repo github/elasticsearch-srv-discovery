@@ -158,6 +158,7 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
 
             try {
                 TransportAddress[] addresses = transportService.addressesFromString(address);
+                //TODO need to resolve the A records instead of returning SRV domains. Original code did this apparently?
                 logger.trace("adding {}, transport_address {}", address, addresses[0]);
                 discoNodes.add(new DiscoveryNode("#srv-" + address, addresses[0], version.minimumCompatibilityVersion()));
             } catch (Exception e) {
