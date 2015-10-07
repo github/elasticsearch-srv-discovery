@@ -23,4 +23,13 @@
             </includes>
         </dependencySet>
     </dependencySets>
+    <fileSets>
+        <fileSet>
+            <outputDirectory>/</outputDirectory>
+            <directory>${project.basedir}</directory>
+            <includes>
+                <include>plugin-descriptor.properties</include>
+            </includes>
+        </fileSet>
+    </fileSets>
 </assembly>                                                     ˜
