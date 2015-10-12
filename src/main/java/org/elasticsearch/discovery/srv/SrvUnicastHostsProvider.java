@@ -36,6 +36,8 @@ import org.elasticsearch.transport.TransportService;
 import org.xbill.DNS.*;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -124,12 +126,10 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
             return discoNodes;
         }
         try {
-            Record[] records = lookupRecords();
-            logger.trace("Building dynamic unicast discovery nodes...");
-            if (records == null || records.length == 0) {
+            logger.trace("Building dynamic discovery nodes...");
+            discoNodes = lookupNodes();
+            if (discoNodes.size() == 0) {
                 logger.debug("No nodes found");
-            } else {
-                discoNodes = parseRecords(records);
             }
         } catch (TextParseException e) {
             logger.error("Unable to parse DNS query '{}'", query);
@@ -139,31 +139,33 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
         return discoNodes;
     }
 
-    protected Record[] lookupRecords() throws TextParseException {
-        Lookup lookup = new Lookup(query, Type.SRV);
+    protected List<Record> lookupRecords(String query, int type) throws TextParseException {
+        Lookup lookup = new Lookup(query, type);
         if (this.resolver != null) {
             lookup.setResolver(this.resolver);
         }
-        return lookup.run();
+
+        Record[] records = lookup.run();
+        return records == null ? new ArrayList<Record>() : Arrays.asList(records);
     }
 
-    protected List<DiscoveryNode> parseRecords(Record[] records) {
+    protected List<DiscoveryNode> lookupNodes() throws TextParseException {
         List<DiscoveryNode> discoNodes = Lists.newArrayList();
-        for (Record record : records) {
-            SRVRecord srv = (SRVRecord) record;
 
-            String hostname = srv.getTarget().toString().replaceFirst("\\.$", "");
-            int port = srv.getPort();
-            String address = hostname + ":" + port;
-
-            try {
-                TransportAddress[] addresses = transportService.addressesFromString(address);
-                logger.trace("adding {}, transport_address {}", address, addresses[0]);
-                discoNodes.add(new DiscoveryNode("#srv-" + address, addresses[0], version.minimumCompatibilityVersion()));
-            } catch (Exception e) {
-                logger.warn("failed to add {}, address {}", e, address);
+        for (Record srvRecord : lookupRecords(query, Type.SRV)) {
+            for (Record aRecord : lookupRecords(((SRVRecord) srvRecord).getTarget().toString(), Type.A)) {
+                String address = ((ARecord) aRecord).getAddress().getHostAddress() + ":" + ((SRVRecord) srvRecord).getPort();
+                try {
+                    for (TransportAddress transportAddress : transportService.addressesFromString(address)) {
+                        logger.trace("adding {}, transport_address {}", address, transportAddress);
+                        discoNodes.add(new DiscoveryNode("#srv-" + address + "-" + transportAddress, transportAddress, version.minimumCompatibilityVersion()));
+                    }
+                } catch (Exception e) {
+                    logger.warn("failed to add {}, address {}", e, address);
+                }
             }
         }
+
         return discoNodes;
     }
 }
