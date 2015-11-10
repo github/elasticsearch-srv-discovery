@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Grant Rodgers.
+ * Copyright (c) 2015 GitHub
  * Portions copyright (c) 2015 Crate.IO.
  *
  *     Permission is hereby granted, free of charge, to any person obtaining
