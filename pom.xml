@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
     <name>Elasticsearch SRV discovery plugin</name>
     <description>The SRV discovery plugin allows to use SRV recrds for unicast discovery.</description>
-    <url>https://github.com/grantr/elasticsearch-srv-discovery/</url>
+    <url>https://github.com/github/elasticsearch-srv-discovery/</url>
     <inceptionYear>2015</inceptionYear>
     <licenses>
         <license>
@@ -19,9 +19,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:git@github.com:grantr/elasticsearch-srv-discovery.git</connection>
-        <developerConnection>scm:git:git@github.com:grantr/elasticsearch-srv-discovery.git</developerConnection>
-        <url>http://github.com/grantr/elasticsearch-srv-discovery</url>
+        <connection>scm:git:git@github.com:github/elasticsearch-srv-discovery.git</connection>
+        <developerConnection>scm:git:git@github.com:github/elasticsearch-srv-discovery.git</developerConnection>
+        <url>http://github.com/github/elasticsearch-srv-discovery</url>
     </scm>
 
     <properties>
