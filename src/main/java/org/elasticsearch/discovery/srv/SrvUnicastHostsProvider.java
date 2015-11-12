@@ -68,7 +68,7 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
     }
 
     @Nullable
-    private Resolver buildResolver(Settings settings) {
+    protected Resolver buildResolver(Settings settings) {
         String[] addresses = settings.getAsArray(DISCOVERY_SRV_SERVERS);
 
         // Use tcp by default since it retrieves all records
