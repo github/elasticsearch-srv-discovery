@@ -58,6 +58,9 @@ public class SrvtestUnicastHostsProvider extends SrvUnicastHostsProvider {
 
                         result.addRecord(new SRVRecord(query.getQuestion().getName(), DClass.IN, 1, 1, 1, Constants.NODE_0_TRANSPORT_TCP_PORT, Name.fromString(HOSTNAME)), Section.ANSWER);
                         result.addRecord(new SRVRecord(query.getQuestion().getName(), DClass.IN, 1, 1, 1, Constants.NODE_1_TRANSPORT_TCP_PORT, Name.fromString(HOSTNAME)), Section.ANSWER);
+                        result.addRecord(new SRVRecord(query.getQuestion().getName(), DClass.IN, 1, 1, 1, Constants.NODE_2_TRANSPORT_TCP_PORT, Name.fromString(HOSTNAME)), Section.ANSWER);
+                        result.addRecord(new SRVRecord(query.getQuestion().getName(), DClass.IN, 1, 1, 1, Constants.NODE_3_TRANSPORT_TCP_PORT, Name.fromString(HOSTNAME)), Section.ANSWER);
+                        result.addRecord(new SRVRecord(query.getQuestion().getName(), DClass.IN, 1, 1, 1, Constants.NODE_4_TRANSPORT_TCP_PORT, Name.fromString(HOSTNAME)), Section.ANSWER);
                         return result;
                     }
 
