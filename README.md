@@ -7,6 +7,31 @@ Use SRV records for Elasticsearch discovery, like the ones
 Looking for a plugin that uses the Consul API directly? Check out
 [lithiumtech/elasticsearch-consul-discovery](https://github.com/lithiumtech/elasticsearch-consul-discovery).
 
+## Installation
+
+Based on the version of Elasticsearch that you're running, pick the compatible plugin version (e.g. `1.5.0`), then run this command:
+
+```bash
+bin/plugin install srv-discovery --url https://github.com/github/elasticsearch-srv-discovery/releases/download/1.5.0/elasticsearch-srv-discovery-1.5.0.zip
+```
+
+## Compatibility
+
+The SRV Discovery plugin is known to be compatible with these versions of Elasticsearch:
+
+Elasticsearch|SRV Discovery plugin
+-|-
+1.7.3|1.5.0
+1.7.2|1.5.0
+1.7.1|1.5.0
+1.7.0|1.5.0
+1.6.2|1.5.0
+1.6.1|1.5.0
+1.6.0|1.5.0
+1.5.2|1.5.0
+1.5.1|1.5.0
+1.5.0|1.5.0
+
 ## Configuration
 
 Key|Example|Description
