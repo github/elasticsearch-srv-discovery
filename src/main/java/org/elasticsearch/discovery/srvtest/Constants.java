@@ -26,4 +26,7 @@ public class Constants {
     public static final String TEST_QUERY = "test-tag.test-service.service.test.";
     public static final int NODE_0_TRANSPORT_TCP_PORT = 9300;
     public static final int NODE_1_TRANSPORT_TCP_PORT = 9301;
+    public static final int NODE_2_TRANSPORT_TCP_PORT = 9302;
+    public static final int NODE_3_TRANSPORT_TCP_PORT = 9303;
+    public static final int NODE_4_TRANSPORT_TCP_PORT = 9304;
 }

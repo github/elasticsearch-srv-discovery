@@ -33,7 +33,7 @@ import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilde
 @ClusterScope(scope = ElasticsearchIntegrationTest.Scope.SUITE, numDataNodes = 0)
 public class SrvDiscoveryIntegrationTest extends ElasticsearchIntegrationTest {
     @Test
-    public void testClusterSrvDiscovery() throws Exception {
+    public void testClusterSrvDiscoveryWith2Nodes() throws Exception {
         ImmutableSettings.Builder b = settingsBuilder()
             .put("node.mode", "network")
             .put("discovery.zen.ping.multicast.enabled", "false")
@@ -46,5 +46,24 @@ public class SrvDiscoveryIntegrationTest extends ElasticsearchIntegrationTest {
         internalCluster().startNode(b.put("transport.tcp.port", String.valueOf(Constants.NODE_1_TRANSPORT_TCP_PORT)).build());
 
         assertEquals(cluster().size(), 2);
+    }
+
+    @Test
+    public void testClusterSrvDiscoveryWith5Nodes() throws Exception {
+        ImmutableSettings.Builder b = settingsBuilder()
+            .put("node.mode", "network")
+            .put("discovery.zen.ping.multicast.enabled", "false")
+            .put("discovery.type", "srvtest")
+            .put(SrvUnicastHostsProvider.DISCOVERY_SRV_QUERY, Constants.TEST_QUERY);
+
+        assertEquals(cluster().size(), 0);
+
+        internalCluster().startNode(b.put("transport.tcp.port", String.valueOf(Constants.NODE_0_TRANSPORT_TCP_PORT)).build());
+        internalCluster().startNode(b.put("transport.tcp.port", String.valueOf(Constants.NODE_1_TRANSPORT_TCP_PORT)).build());
+        internalCluster().startNode(b.put("transport.tcp.port", String.valueOf(Constants.NODE_2_TRANSPORT_TCP_PORT)).build());
+        internalCluster().startNode(b.put("transport.tcp.port", String.valueOf(Constants.NODE_3_TRANSPORT_TCP_PORT)).build());
+        internalCluster().startNode(b.put("transport.tcp.port", String.valueOf(Constants.NODE_4_TRANSPORT_TCP_PORT)).build());
+
+        assertEquals(cluster().size(), 5);
     }
 }
