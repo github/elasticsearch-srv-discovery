@@ -29,7 +29,6 @@ import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.component.AbstractComponent;
 import org.elasticsearch.common.inject.Inject;
-import org.elasticsearch.common.logging.ESLogger;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.discovery.zen.ping.unicast.UnicastHostsProvider;
@@ -67,11 +66,11 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
         this.version = version;
 
         this.query = settings.get(DISCOVERY_SRV_QUERY);
-        this.resolver = buildResolver(settings, logger);
+        this.resolver = buildResolver(settings);
     }
 
     @Nullable
-    protected Resolver buildResolver(Settings settings, ESLogger logger) {
+    protected Resolver buildResolver(Settings settings) {
         String[] addresses = settings.getAsArray(DISCOVERY_SRV_SERVERS);
 
         // Use tcp by default since it retrieves all records
