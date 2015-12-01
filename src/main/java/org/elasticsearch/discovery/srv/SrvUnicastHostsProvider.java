@@ -29,6 +29,7 @@ import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.component.AbstractComponent;
 import org.elasticsearch.common.inject.Inject;
+import org.elasticsearch.common.logging.ESLogger;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.discovery.zen.ping.unicast.UnicastHostsProvider;
@@ -57,6 +58,8 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
     private final String query;
     private final Resolver resolver;
 
+    public boolean usingTCP = false;
+
     @Inject
     public SrvUnicastHostsProvider(Settings settings, TransportService transportService, Version version) {
         super(settings);
@@ -64,19 +67,22 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
         this.version = version;
 
         this.query = settings.get(DISCOVERY_SRV_QUERY);
-        this.resolver = buildResolver(settings);
+        this.resolver = buildResolver(settings, logger);
     }
 
     @Nullable
-    protected Resolver buildResolver(Settings settings) {
+    protected Resolver buildResolver(Settings settings, ESLogger logger) {
         String[] addresses = settings.getAsArray(DISCOVERY_SRV_SERVERS);
 
         // Use tcp by default since it retrieves all records
         String protocol = settings.get(DISCOVERY_SRV_PROTOCOL, "tcp");
 
         List<Resolver> resolvers = Lists.newArrayList();
-
-        Resolver parent_resolver = null;
+        try {
+            resolvers.add(new SimpleResolver());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
 
         for (String address : addresses) {
             String host = null;
@@ -105,18 +111,19 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
             }
         }
 
-        if (resolvers.size() > 0) {
-            try {
-                parent_resolver = new ExtendedResolver(resolvers.toArray(new Resolver[resolvers.size()]));
+        try {
+            Resolver parent_resolver = new ExtendedResolver(resolvers.toArray(new Resolver[resolvers.size()]));
 
-                if (protocol == "tcp") {
-                    parent_resolver.setTCP(true);
-                }
-            } catch (UnknownHostException e) {
-                logger.warn("Could not create resolver. Using default resolver.", e);
+            if (protocol == "tcp") {
+                parent_resolver.setTCP(true);
+                usingTCP = true;
             }
+
+            return parent_resolver;
+        } catch (UnknownHostException e) {
+            logger.warn("Could not create resolver. Using default resolver.", e);
+            return null;
         }
-        return parent_resolver;
     }
 
     public List<DiscoveryNode> buildDynamicNodes() {

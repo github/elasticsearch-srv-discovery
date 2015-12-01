@@ -25,6 +25,7 @@ package org.elasticsearch.discovery.srvtest;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.common.inject.Inject;
+import org.elasticsearch.common.logging.ESLogger;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.discovery.srv.SrvUnicastHostsProvider;
 import org.elasticsearch.transport.TransportService;
@@ -41,7 +42,7 @@ public class SrvtestUnicastHostsProvider extends SrvUnicastHostsProvider {
     }
 
     @Override
-    protected Resolver buildResolver(Settings settings) {
+    protected Resolver buildResolver(Settings settings, ESLogger logger) {
         try {
             return new SimpleResolver() {
                 @Override
