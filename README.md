@@ -20,7 +20,7 @@ bin/plugin install srv-discovery --url https://github.com/github/elasticsearch-s
 The SRV Discovery plugin is known to be compatible with these versions of Elasticsearch:
 
 Elasticsearch|SRV Discovery plugin
--|-
+---|---
 1.7.3|1.5.0
 1.7.2|1.5.0
 1.7.1|1.5.0
