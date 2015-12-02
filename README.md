@@ -15,6 +15,18 @@ Based on the version of Elasticsearch that you're running, pick the compatible p
 bin/plugin install srv-discovery --url https://github.com/github/elasticsearch-srv-discovery/releases/download/1.5.0/elasticsearch-srv-discovery-1.5.0.zip
 ```
 
+Verify that the plugin was installed:
+
+```
+$ bin/plugin -l
+Installed plugins:
+    - srv-discovery
+
+$ curl localhost:9200/_cat/plugins?v
+name  component             version type url
+Pluto srv-discovery         ...     j
+```
+
 ## Compatibility
 
 The SRV Discovery plugin is known to be compatible with these versions of Elasticsearch:
@@ -60,4 +72,18 @@ discovery:
     servers:
       - 127.0.0.1:8600
       - 192.168.1.1
+```
+
+## Development
+
+To see the effects of a change on a real Elasticsearch instance, build the package and install it like so:
+
+```
+plugin="/Users/you/elasticsearch-<version>/bin/plugin"
+name="srv-discovery"
+zip="file:///Users/you/elasticsearch-srv-discovery/target/releases/elasticsearch-srv-discovery-<version>.zip"
+
+mvn package -Dmaven.test.skip=true || exit 1
+$plugin remove $name
+$plugin install $name --url $zip
 ```
