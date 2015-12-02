@@ -72,15 +72,18 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
     @Nullable
     protected Resolver buildResolver(Settings settings) {
         String[] addresses = settings.getAsArray(DISCOVERY_SRV_SERVERS);
+        logger.debug("Using servers {}", addresses);
 
         // Use tcp by default since it retrieves all records
         String protocol = settings.get(DISCOVERY_SRV_PROTOCOL, "tcp");
+        logger.debug("Using protocol {}", protocol);
 
         List<Resolver> resolvers = Lists.newArrayList();
         try {
             resolvers.add(new SimpleResolver());
+            logger.debug("Added a default SimpleResolver");
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            logger.warn("Failed to create a default SimpleResolver", e);
         }
 
         for (String address : addresses) {
@@ -105,6 +108,7 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
                     resolver.setPort(port);
                 }
                 resolvers.add(resolver);
+                logger.debug("Added a resolver for host {} port {}", host, port);
             } catch (UnknownHostException e) {
                 logger.warn("Could not create resolver for '{}'", address, e);
             }
@@ -118,6 +122,7 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
                 usingTCP = true;
             }
 
+            logger.debug("Created an ExtendedResolver using {} resolvers and protocol {}", resolvers.size(), protocol);
             return parent_resolver;
         } catch (UnknownHostException e) {
             logger.warn("Could not create resolver. Using default resolver.", e);
@@ -159,7 +164,9 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
         List<DiscoveryNode> discoNodes = Lists.newArrayList();
 
         for (Record srvRecord : lookupRecords(query, Type.SRV)) {
+            logger.trace("Found SRV record {}", srvRecord);
             for (Record aRecord : lookupRecords(((SRVRecord) srvRecord).getTarget().toString(), Type.A)) {
+                logger.trace("Found A record {} for SRV record", aRecord, srvRecord);
                 String address = ((ARecord) aRecord).getAddress().getHostAddress() + ":" + ((SRVRecord) srvRecord).getPort();
                 try {
                     for (TransportAddress transportAddress : transportService.addressesFromString(address)) {
