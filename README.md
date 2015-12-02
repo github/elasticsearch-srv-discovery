@@ -78,7 +78,7 @@ discovery:
 
 To see the effects of a change on a real Elasticsearch instance, build the package and install it like so:
 
-```
+```bash
 plugin="/Users/you/elasticsearch-<version>/bin/plugin"
 name="srv-discovery"
 zip="file:///Users/you/elasticsearch-srv-discovery/target/releases/elasticsearch-srv-discovery-<version>.zip"
