@@ -27,6 +27,7 @@ import org.elasticsearch.discovery.srvtest.Constants;
 import org.elasticsearch.test.ElasticsearchIntegrationTest;
 import org.elasticsearch.test.ElasticsearchIntegrationTest.ClusterScope;
 import org.junit.Test;
+import org.xbill.DNS.Resolver;
 
 import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
 
@@ -65,5 +66,18 @@ public class SrvDiscoveryIntegrationTest extends ElasticsearchIntegrationTest {
         internalCluster().startNode(b.put("transport.tcp.port", String.valueOf(Constants.NODE_4_TRANSPORT_TCP_PORT)).build());
 
         assertEquals(cluster().size(), 5);
+    }
+
+    @Test
+    public void testResolverStillDefaultsToTcpWhenNoServersAreGiven() throws Exception {
+        ImmutableSettings.Builder b = settingsBuilder()
+            .put("node.mode", "network")
+            .put("discovery.zen.ping.multicast.enabled", "false")
+            .put("discovery.type", "srv")
+            .put(SrvUnicastHostsProvider.DISCOVERY_SRV_QUERY, "");
+
+        SrvUnicastHostsProvider provider = new SrvUnicastHostsProvider(b.build(), null, null);
+
+        assertTrue(provider.usingTCP);
     }
 }
