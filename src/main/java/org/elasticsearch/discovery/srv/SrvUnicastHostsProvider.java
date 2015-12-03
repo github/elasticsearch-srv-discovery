@@ -66,6 +66,7 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
         this.version = version;
 
         this.query = settings.get(DISCOVERY_SRV_QUERY);
+        logger.debug("Using query {}", this.query);
         this.resolver = buildResolver(settings);
     }
 
