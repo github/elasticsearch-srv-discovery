@@ -113,7 +113,7 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
             try {
                 parent_resolver = new ExtendedResolver(resolvers.toArray(new Resolver[resolvers.size()]));
 
-                if (protocol == "tcp") {
+                if (protocol.equals("tcp")) {
                     parent_resolver.setTCP(true);
                 }
 
