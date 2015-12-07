@@ -81,9 +81,9 @@ To see the effects of a change on a real Elasticsearch instance, build the packa
 ```bash
 plugin="/Users/you/elasticsearch-<version>/bin/plugin"
 name="srv-discovery"
-zip="file:///Users/you/elasticsearch-srv-discovery/target/releases/elasticsearch-srv-discovery-<version>.zip"
+zip="file:///Users/you/elasticsearch-srv-discovery/build/distributions/elasticsearch-srv-discovery-<version>.zip"
 
-mvn package -Dmaven.test.skip=true || exit 1
+gradle distZip || exit 1
 $plugin remove $name
 $plugin install $name --url $zip
 ```
