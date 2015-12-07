@@ -79,8 +79,6 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
 
         List<Resolver> resolvers = Lists.newArrayList();
 
-        Resolver parent_resolver = null;
-
         for (String address : addresses) {
             String host = null;
             int port = -1;
@@ -109,6 +107,8 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
             }
         }
 
+        Resolver parent_resolver = null;
+
         if (resolvers.size() > 0) {
             try {
                 parent_resolver = new ExtendedResolver(resolvers.toArray(new Resolver[resolvers.size()]));
@@ -122,6 +122,13 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
                 logger.warn("Could not create resolver. Using default resolver.", e);
             }
         }
+
+        parent_resolver = parent_resolver == null ? Lookup.getDefaultResolver() : parent_resolver;
+
+        if (protocol == "tcp") {
+            parent_resolver.setTCP(true);
+        }
+
         return parent_resolver;
     }
 
