@@ -9,10 +9,10 @@ Looking for a plugin that uses the Consul API directly? Check out
 
 ## Installation
 
-Based on the version of Elasticsearch that you're running, pick the compatible plugin version (e.g. `1.5.0`), then run this command:
+Based on the version of Elasticsearch that you're running, pick the compatible plugin version (e.g. `1.5.1`), then run this command:
 
 ```bash
-bin/plugin install srv-discovery --url https://github.com/github/elasticsearch-srv-discovery/releases/download/1.5.0/elasticsearch-srv-discovery-1.5.0.zip
+bin/plugin install srv-discovery --url https://github.com/github/elasticsearch-srv-discovery/releases/download/1.5.1/elasticsearch-srv-discovery-1.5.1.zip
 ```
 
 Verify that the plugin was installed:
@@ -33,16 +33,16 @@ The SRV Discovery plugin is known to be compatible with these versions of Elasti
 
 Elasticsearch|SRV Discovery plugin
 ---|---
-1.7.3|1.5.0
-1.7.2|1.5.0
-1.7.1|1.5.0
-1.7.0|1.5.0
-1.6.2|1.5.0
-1.6.1|1.5.0
-1.6.0|1.5.0
-1.5.2|1.5.0
-1.5.1|1.5.0
-1.5.0|1.5.0
+1.7.3|1.5.1
+1.7.2|1.5.1
+1.7.1|1.5.1
+1.7.0|1.5.1
+1.6.2|1.5.1
+1.6.1|1.5.1
+1.6.0|1.5.1
+1.5.2|1.5.1
+1.5.1|1.5.1
+1.5.0|1.5.1
 
 ## Configuration
 
