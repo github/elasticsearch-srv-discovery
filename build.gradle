@@ -1,10 +1,17 @@
 import org.apache.tools.ant.filters.*;
 
-group = 'org.elasticsearch'
-version = '1.5.1'
-
 apply plugin: 'java'
 apply plugin: 'java-library-distribution'
+
+def propertyOrDefault(name, defaultValue) {
+    return project.hasProperty(name) ? project.getProperty(name) : defaultValue
+}
+
+group = 'org.elasticsearch'
+version = propertyOrDefault('plugin_version', '1.5.1')
+
+def elasticsearch_version = propertyOrDefault('elasticsearch_version', '1.5.0')
+def lucene_version = propertyOrDefault('lucene_version', '4.10.4')
 
 configurations {
     provided
@@ -17,9 +24,6 @@ processResources {
 repositories {
     mavenCentral()
 }
-
-def elasticsearch_version = "1.5.0"
-def lucene_version = "4.10.4"
 
 dependencies {
     compile "org.apache.lucene:lucene-test-framework:$lucene_version"
