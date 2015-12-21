@@ -22,19 +22,19 @@
 
 package org.elasticsearch.discovery.srv;
 
-import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.discovery.srvtest.Constants;
-import org.elasticsearch.test.ElasticsearchIntegrationTest;
-import org.elasticsearch.test.ElasticsearchIntegrationTest.ClusterScope;
+import org.elasticsearch.test.ESIntegTestCase;
+import org.elasticsearch.test.ESIntegTestCase.ClusterScope;
 import org.junit.Test;
 
-import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
+import static org.elasticsearch.common.settings.Settings.settingsBuilder;
 
-@ClusterScope(scope = ElasticsearchIntegrationTest.Scope.SUITE, numDataNodes = 0)
-public class SrvDiscoveryIntegrationTest extends ElasticsearchIntegrationTest {
+@ClusterScope(scope = ESIntegTestCase.Scope.SUITE, numDataNodes = 0)
+public class SrvDiscoveryIntegrationTest extends ESIntegTestCase {
     @Test
     public void testClusterSrvDiscoveryWith2Nodes() throws Exception {
-        ImmutableSettings.Builder b = settingsBuilder()
+        Settings.Builder b = settingsBuilder()
             .put("node.mode", "network")
             .put("discovery.zen.ping.multicast.enabled", "false")
             .put("discovery.type", "srvtest")
@@ -50,7 +50,7 @@ public class SrvDiscoveryIntegrationTest extends ElasticsearchIntegrationTest {
 
     @Test
     public void testClusterSrvDiscoveryWith5Nodes() throws Exception {
-        ImmutableSettings.Builder b = settingsBuilder()
+        Settings.Builder b = settingsBuilder()
             .put("node.mode", "network")
             .put("discovery.zen.ping.multicast.enabled", "false")
             .put("discovery.type", "srvtest")

@@ -26,7 +26,7 @@ package org.elasticsearch.discovery.srv;
 import org.elasticsearch.Version;
 import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.common.Nullable;
-import org.elasticsearch.common.collect.Lists;
+import org.elasticsearch.common.util.CollectionUtils;
 import org.elasticsearch.common.component.AbstractComponent;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
@@ -77,7 +77,7 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
         String protocol = settings.get(DISCOVERY_SRV_PROTOCOL, "tcp");
         logger.debug("Using protocol {}", protocol);
 
-        List<Resolver> resolvers = Lists.newArrayList();
+        List<Resolver> resolvers = CollectionUtils.newArrayList();
 
         for (String address : addresses) {
             String host = null;
@@ -133,7 +133,7 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
     }
 
     public List<DiscoveryNode> buildDynamicNodes() {
-        List<DiscoveryNode> discoNodes = Lists.newArrayList();
+        List<DiscoveryNode> discoNodes = CollectionUtils.newArrayList();
         if (query == null) {
             logger.error("DNS query must not be null. Please set '{}'", DISCOVERY_SRV_QUERY);
             return discoNodes;
@@ -163,7 +163,7 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
     }
 
     protected List<DiscoveryNode> lookupNodes() throws TextParseException {
-        List<DiscoveryNode> discoNodes = Lists.newArrayList();
+        List<DiscoveryNode> discoNodes = CollectionUtils.newArrayList();
 
         for (Record srvRecord : lookupRecords(query, Type.SRV)) {
             logger.trace("Found SRV record {}", srvRecord);
@@ -171,7 +171,7 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
                 logger.trace("Found A record {} for SRV record", aRecord, srvRecord);
                 String address = ((ARecord) aRecord).getAddress().getHostAddress() + ":" + ((SRVRecord) srvRecord).getPort();
                 try {
-                    for (TransportAddress transportAddress : transportService.addressesFromString(address)) {
+                    for (TransportAddress transportAddress : transportService.addressesFromString(address, 1)) {
                         logger.trace("adding {}, transport_address {}", address, transportAddress);
                         discoNodes.add(new DiscoveryNode("#srv-" + address + "-" + transportAddress, transportAddress, version.minimumCompatibilityVersion()));
                     }

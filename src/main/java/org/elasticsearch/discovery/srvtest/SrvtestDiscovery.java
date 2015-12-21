@@ -40,9 +40,9 @@ public class SrvtestDiscovery extends ZenDiscovery {
     @Inject
     public SrvtestDiscovery(Settings settings, ClusterName clusterName, ThreadPool threadPool, TransportService transportService,
                         ClusterService clusterService, NodeSettingsService nodeSettingsService, ZenPingService pingService,
-                        DiscoveryNodeService discoveryNodeService,DiscoverySettings discoverySettings,
-                        ElectMasterService electMasterService, DynamicSettings dynamicSettings) {
+                        DiscoverySettings discoverySettings,
+                        ElectMasterService electMasterService) {
         super(settings, clusterName, threadPool, transportService, clusterService, nodeSettingsService,
-                discoveryNodeService, pingService, electMasterService, discoverySettings, dynamicSettings);
+                pingService, electMasterService, discoverySettings);
     }
 }

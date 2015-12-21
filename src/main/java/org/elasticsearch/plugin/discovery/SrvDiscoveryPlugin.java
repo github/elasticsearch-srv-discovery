@@ -22,10 +22,21 @@
 
 package org.elasticsearch.plugin.discovery;
 
+import org.elasticsearch.common.component.LifecycleComponent;
+import org.elasticsearch.common.inject.Module;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.plugins.AbstractPlugin;
+import org.elasticsearch.common.util.CollectionUtils;
+import org.elasticsearch.discovery.srv.SrvDiscovery;
+import org.elasticsearch.discovery.srvtest.SrvtestDiscovery;
+import org.elasticsearch.plugins.Plugin;
+import org.elasticsearch.discovery.DiscoveryModule;
+import org.elasticsearch.discovery.srv.SrvUnicastHostsProvider;
 
-public class SrvDiscoveryPlugin extends AbstractPlugin {
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Collection;
+
+public class SrvDiscoveryPlugin extends Plugin {
 
     private final Settings settings;
 
@@ -43,5 +54,9 @@ public class SrvDiscoveryPlugin extends AbstractPlugin {
         return "SRV Discovery Plugin";
     }
 
-
+    public void onModule(DiscoveryModule discoveryModule) {
+        discoveryModule.addDiscoveryType("srv", SrvDiscovery.class);
+        discoveryModule.addDiscoveryType("srvtest", SrvtestDiscovery.class);
+        discoveryModule.addUnicastHostProvider(SrvUnicastHostsProvider.class);
+    }
 }
