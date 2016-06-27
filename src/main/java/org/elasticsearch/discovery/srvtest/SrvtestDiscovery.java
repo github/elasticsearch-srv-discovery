@@ -24,8 +24,6 @@ package org.elasticsearch.discovery.srvtest;
 
 import org.elasticsearch.cluster.ClusterName;
 import org.elasticsearch.cluster.ClusterService;
-import org.elasticsearch.cluster.node.DiscoveryNodeService;
-import org.elasticsearch.cluster.settings.DynamicSettings;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.discovery.DiscoverySettings;
@@ -40,9 +38,9 @@ public class SrvtestDiscovery extends ZenDiscovery {
     @Inject
     public SrvtestDiscovery(Settings settings, ClusterName clusterName, ThreadPool threadPool, TransportService transportService,
                         ClusterService clusterService, NodeSettingsService nodeSettingsService, ZenPingService pingService,
-                        DiscoveryNodeService discoveryNodeService,DiscoverySettings discoverySettings,
-                        ElectMasterService electMasterService, DynamicSettings dynamicSettings) {
+                        DiscoverySettings discoverySettings,
+                        ElectMasterService electMasterService) {
         super(settings, clusterName, threadPool, transportService, clusterService, nodeSettingsService,
-                discoveryNodeService, pingService, electMasterService, discoverySettings, dynamicSettings);
+                pingService, electMasterService, discoverySettings);
     }
 }

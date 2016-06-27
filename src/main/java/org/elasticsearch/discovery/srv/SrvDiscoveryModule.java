@@ -24,21 +24,27 @@ package org.elasticsearch.discovery.srv;
 
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.discovery.Discovery;
-import org.elasticsearch.discovery.zen.ZenDiscoveryModule;
+
+import org.elasticsearch.common.inject.AbstractModule;
+import org.elasticsearch.common.logging.ESLogger;
+import org.elasticsearch.common.logging.Loggers;
+import org.elasticsearch.ElasticsearchException;
 
 /**
  *
  */
-public class SrvDiscoveryModule extends ZenDiscoveryModule {
+public class SrvDiscoveryModule extends AbstractModule {
+	protected final ESLogger logger;
+	private Settings settings;
 
     @Inject
     public SrvDiscoveryModule(Settings settings) {
-        addUnicastHostProvider(SrvUnicastHostsProvider.class);
+	    this.settings = settings;
+	    this.logger = Loggers.getLogger(getClass(), settings);
     }
 
     @Override
-    protected void bindDiscovery() {
-        bind(Discovery.class).to(SrvDiscovery.class).asEagerSingleton();
+    protected void configure() {
+	    logger.debug("starting srv services");
     }
 }
