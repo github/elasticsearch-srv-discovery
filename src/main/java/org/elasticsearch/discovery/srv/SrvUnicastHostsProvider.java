@@ -152,9 +152,7 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
     }
 
     protected List<Record> lookupRecords(String query, int type) throws TextParseException {
-	logger.trace ("Got into lookupRecords, query: {} type: {}", query, type);
         Lookup lookup = new Lookup(query, type);
-	logger.trace ("Didn't hung on new Lookup");
         if (this.resolver != null) {
             lookup.setResolver(this.resolver);
         }
