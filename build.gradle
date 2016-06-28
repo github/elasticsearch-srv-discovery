@@ -1,13 +1,18 @@
 import org.apache.tools.ant.filters.*;
 
-group = 'org.elasticsearch'
-version = '2.3.3'
-
 apply plugin: 'java'
 apply plugin: 'java-library-distribution'
+apply plugin: 'distribution'
+
+group = 'org.elasticsearch'
+version = '2.3.3'
+description = 'SRV Discovery Plugin'
+
+def elasticsearch_version = "2.3.3"
+def lucene_version = "5.5.0"
 
 configurations {
-    provided
+    providedCompile
 }
 
 processResources {
@@ -18,15 +23,31 @@ repositories {
     mavenCentral()
 }
 
-def elasticsearch_version = "2.3.3"
-def lucene_version = "5.5.0"
-
 dependencies {
-    compile "org.apache.lucene:lucene-test-framework:$lucene_version"
-    compile "org.elasticsearch:elasticsearch:$elasticsearch_version"
-    compile(group: 'org.elasticsearch', name: 'elasticsearch', version: elasticsearch_version, classifier: 'tests')
+    providedCompile "org.elasticsearch:elasticsearch:$elasticsearch_version"
     compile 'dnsjava:dnsjava:2.1.7'
-    compile 'org.hamcrest:hamcrest-library:1.3'
-    compile 'junit:junit:4.11'
-    compile 'com.carrotsearch.randomizedtesting:randomizedtesting-runner:2.1.10'
+    testCompile (group: 'org.elasticsearch', name: 'elasticsearch', version: elasticsearch_version, classifier: 'tests')
+    testCompile "org.apache.lucene:lucene-test-framework:$lucene_version"
+    testCompile 'org.hamcrest:hamcrest-library:1.3'
+    testCompile 'junit:junit:4.11'
+    testCompile 'com.carrotsearch.randomizedtesting:randomizedtesting-runner:2.1.10'
+}
+
+jar {
+  manifest {
+    attributes(
+      "Class-Path": configurations.compile.collect { "lib/$it.name" }.join(' '))
+  }
+}
+
+distributions {
+    main {
+        contents {
+            into '/'
+        }
+    }
+}
+
+compileJava {
+    sourceSets.main.compileClasspath += configurations.providedCompile
 }
