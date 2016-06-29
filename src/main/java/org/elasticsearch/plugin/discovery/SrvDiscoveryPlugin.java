@@ -29,8 +29,8 @@ import java.util.Collections;
 import org.elasticsearch.common.logging.ESLogger;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.discovery.srv.SrvDiscovery;
-import org.elasticsearch.discovery.srv.SrvDiscoveryModule;
 import org.elasticsearch.discovery.srv.SrvUnicastHostsProvider;
+import org.elasticsearch.discovery.srvtest.SrvtestDiscovery;
 import org.elasticsearch.discovery.DiscoveryModule;
 import org.elasticsearch.common.inject.Module;
 
@@ -41,7 +41,7 @@ public class SrvDiscoveryPlugin extends Plugin {
 
     public SrvDiscoveryPlugin(Settings settings) {
         this.settings = settings;
-        logger.trace("starting srv discovery plugin...");
+        logger.trace("Starting SRV discovery plugin...");
     }
 
     @Override
@@ -54,13 +54,9 @@ public class SrvDiscoveryPlugin extends Plugin {
         return "SRV Discovery Plugin";
     }
 
-    @Override
-    public Collection<Module> nodeModules() {
-        return Collections.singletonList((Module) new SrvDiscoveryModule(settings));
-    }
-
     public void onModule(DiscoveryModule discoveryModule) {
         discoveryModule.addDiscoveryType("srv", SrvDiscovery.class);
+        discoveryModule.addDiscoveryType("srvtest", SrvtestDiscovery.class);
         discoveryModule.addUnicastHostProvider(SrvUnicastHostsProvider.class);
     }
 

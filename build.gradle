@@ -4,12 +4,16 @@ apply plugin: 'java'
 apply plugin: 'java-library-distribution'
 apply plugin: 'distribution'
 
+def propertyOrDefault(name, defaultValue) {
+    return project.hasProperty(name) ? project.getProperty(name) : defaultValue
+}
+
 group = 'org.elasticsearch'
-version = '2.3.3'
+version = propertyOrDefault('plugin_version', '2.3.3')
 description = 'SRV Discovery Plugin'
 
-def elasticsearch_version = "2.3.3"
-def lucene_version = "5.5.0"
+def elasticsearch_version = propertyOrDefault('elasticsearch_version', '2.3.3')
+def lucene_version = propertyOrDefault('lucene_version', '5.5.0')
 
 configurations {
     providedCompile
@@ -25,8 +29,8 @@ repositories {
 
 dependencies {
     providedCompile "org.elasticsearch:elasticsearch:$elasticsearch_version"
+    providedCompile (group: 'org.elasticsearch', name: 'elasticsearch', version: elasticsearch_version, classifier: 'tests')
     compile 'dnsjava:dnsjava:2.1.7'
-    testCompile (group: 'org.elasticsearch', name: 'elasticsearch', version: elasticsearch_version, classifier: 'tests')
     testCompile "org.apache.lucene:lucene-test-framework:$lucene_version"
     testCompile 'org.hamcrest:hamcrest-library:1.3'
     testCompile 'junit:junit:4.11'
@@ -34,10 +38,9 @@ dependencies {
 }
 
 jar {
-  manifest {
-    attributes(
-      "Class-Path": configurations.compile.collect { "lib/$it.name" }.join(' '))
-  }
+    manifest {
+        attributes("Class-Path": configurations.compile.collect { "lib/$it.name" }.join(' '))
+    }
 }
 
 distributions {
@@ -50,4 +53,6 @@ distributions {
 
 compileJava {
     sourceSets.main.compileClasspath += configurations.providedCompile
+    sourceSets.test.compileClasspath += configurations.providedCompile
+    sourceSets.test.runtimeClasspath += configurations.providedCompile
 }

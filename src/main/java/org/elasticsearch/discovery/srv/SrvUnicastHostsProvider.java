@@ -76,7 +76,7 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
         String protocol = settings.get(DISCOVERY_SRV_PROTOCOL, "tcp");
         logger.debug("Using protocol {}", protocol);
 
-	List<Resolver> resolvers = new ArrayList();
+        List<Resolver> resolvers = new ArrayList();
 
         for (String address : addresses) {
             String host = null;
@@ -132,7 +132,7 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
     }
 
     public List<DiscoveryNode> buildDynamicNodes() {
-	List<DiscoveryNode> discoNodes = new ArrayList();
+        List<DiscoveryNode> discoNodes = new ArrayList();
         if (query == null) {
             logger.error("DNS query must not be null. Please set '{}'", DISCOVERY_SRV_QUERY);
             return discoNodes;
@@ -162,7 +162,7 @@ public class SrvUnicastHostsProvider extends AbstractComponent implements Unicas
     }
 
     protected List<DiscoveryNode> lookupNodes() throws TextParseException {
-	List<DiscoveryNode> discoNodes = new ArrayList<DiscoveryNode>();
+        List<DiscoveryNode> discoNodes = new ArrayList<DiscoveryNode>();
 
         for (Record srvRecord : lookupRecords(query, Type.SRV)) {
             logger.trace("Found SRV record {}", srvRecord);

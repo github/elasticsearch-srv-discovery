@@ -36,12 +36,12 @@ public class SrvtestDiscoveryModule extends AbstractModule {
 
     @Inject
     public SrvtestDiscoveryModule(Settings settings) {
-	    this.settings = settings;
-	    this.logger = Loggers.getLogger(getClass(), settings);
+        this.settings = settings;
+        this.logger = Loggers.getLogger(getClass(), settings);
     }
 
     @Override
     protected void configure() {
-	    logger.debug("starting srv services");
+        logger.debug("starting srv services");
     }
 }
