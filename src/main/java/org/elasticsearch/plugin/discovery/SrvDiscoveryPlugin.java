@@ -20,17 +20,28 @@
  *     OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.elasticsearch.plugin.discovery;
+package org.elasticsearch.plugin.discovery.srv;
 
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.plugins.AbstractPlugin;
+import org.elasticsearch.plugins.Plugin;
+import java.util.Collection;
+import java.util.Collections;
+import org.elasticsearch.common.logging.ESLogger;
+import org.elasticsearch.common.logging.Loggers;
+import org.elasticsearch.discovery.srv.SrvDiscovery;
+import org.elasticsearch.discovery.srv.SrvUnicastHostsProvider;
+import org.elasticsearch.discovery.srvtest.SrvtestDiscovery;
+import org.elasticsearch.discovery.DiscoveryModule;
+import org.elasticsearch.common.inject.Module;
 
-public class SrvDiscoveryPlugin extends AbstractPlugin {
+public class SrvDiscoveryPlugin extends Plugin {
 
     private final Settings settings;
+    protected final ESLogger logger = Loggers.getLogger(SrvDiscoveryPlugin.class);
 
     public SrvDiscoveryPlugin(Settings settings) {
         this.settings = settings;
+        logger.trace("Starting SRV discovery plugin...");
     }
 
     @Override
@@ -43,5 +54,10 @@ public class SrvDiscoveryPlugin extends AbstractPlugin {
         return "SRV Discovery Plugin";
     }
 
+    public void onModule(DiscoveryModule discoveryModule) {
+        discoveryModule.addDiscoveryType("srv", SrvDiscovery.class);
+        discoveryModule.addDiscoveryType("srvtest", SrvtestDiscovery.class);
+        discoveryModule.addUnicastHostProvider(SrvUnicastHostsProvider.class);
+    }
 
 }
