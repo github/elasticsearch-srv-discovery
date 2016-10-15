@@ -55,4 +55,5 @@ compileJava {
     sourceSets.main.compileClasspath += configurations.providedCompile
     sourceSets.test.compileClasspath += configurations.providedCompile
     sourceSets.test.runtimeClasspath += configurations.providedCompile
+    sourceSets.test.output.resourcesDir = null
 }
